@@ -22,9 +22,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
+
+import javax.sound.midi.Soundbank;
+
 import java.util.Map;
 import java.util.LinkedHashMap;
 import java.nio.charset.Charset;
+import java.io.FileReader;
+import java.util.Iterator;
+  
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.*;
 
 class WebServer {
   public static void main(String args[]) {
@@ -232,10 +241,6 @@ class WebServer {
             builder.append("\n");
             builder.append("ERROR: There has been an error in handling your request. Please try again.");
           }
-          
-
-          // TODO: Include error handling here with a correct error code and
-          // a response that makes sense
 
         } else if (request.contains("github?")) {
           // pulls the query from the request and runs it with GitHub's REST API
@@ -249,7 +254,11 @@ class WebServer {
           Map<String, String> query_pairs = new LinkedHashMap<String, String>();
           query_pairs = splitQuery(request.replace("github?", ""));
           String json = fetchURL("https://api.github.com/" + query_pairs.get("query"));
-          System.out.println(json);
+          // System.out.println(json);
+          Object j = new JSONParser().parse(new FileReader(json));
+          JSONObject jo = (JSONObject) j;
+
+          System.out.println("Total keys in json object: " + Object.keys(jo).length);
 
           builder.append("Check the todos mentioned in the Java source file");
           // TODO: Parse the JSON returned by your fetch and create an appropriate
