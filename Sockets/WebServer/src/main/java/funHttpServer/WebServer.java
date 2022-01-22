@@ -227,7 +227,7 @@ class WebServer {
             builder.append("Content-Type: text/html; charset=utf-8\n");
             builder.append("\n");
             builder.append("ERROR: One or more inputs were not supplied! Please try again.");
-          } finally {
+          } catch (Exception ex) {
 
             builder.append("HTTP/1.1 404 Not Found\n");
             builder.append("Content-Type: text/html; charset=utf-8\n");
