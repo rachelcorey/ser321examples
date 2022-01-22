@@ -252,7 +252,7 @@ class WebServer {
             query_pairs = splitQuery(request.replace("github?", ""));
             String json = fetchURL("https://api.github.com/" + query_pairs.get("query"));
             if (request.contains("repos") && request.contains("users")) {
-              
+              System.out.println(json); 
               if (json.contains("Not Found")) {
                 throw new UserNotFoundException("GitHub user not found!");
               }
