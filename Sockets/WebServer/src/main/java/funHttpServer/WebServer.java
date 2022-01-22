@@ -252,11 +252,6 @@ class WebServer {
             query_pairs = splitQuery(request.replace("github?", ""));
             String json = fetchURL("https://api.github.com/" + query_pairs.get("query"));
             if (request.contains("repos") && request.contains("users")) {
-              System.out.println(json); 
-              if (json.contains("Not Found")) {
-                throw new UserNotFoundException("GitHub user not found!");
-              }
-
               List<Repos> repos = Arrays.asList(new Gson().fromJson(json, Repos[].class));
 
               builder.append("Owner Name, Owner ID, Name of Public Repo");
@@ -270,11 +265,7 @@ class WebServer {
             }
           } catch (MalformedAPIException maex) {
             PrintMalformedAPI(builder);
-          } catch (UserNotFoundException unfex) {
-            builder.append("The requested GitHub user could not be found. \n\n");
-            Print404(builder);
-          } 
-          catch (NullPointerException npex) {
+          } catch (NullPointerException npex) {
             Print404(builder);
           } catch (Exception ex) {
             Print404(builder);
@@ -305,6 +296,7 @@ class WebServer {
     builder.append("Content-Type: text/html; charset=utf-8\n");
     builder.append("\n");
     builder.append("ERROR: There has been an error in handling your request. Please try again.");
+    builder.append("Please make sure the requested GitHub user exists!");
   }
   public static void PrintMalformedAPI(StringBuilder builder) {
     builder.append("HTTP/1.1 400 Bad Request\n");
