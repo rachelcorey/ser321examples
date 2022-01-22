@@ -251,7 +251,26 @@ class WebServer {
           //     then drill down to what you care about
           // "Owner's repo is named RepoName. Example: find RepoName's contributors" translates to
           //     "/repos/OWNERNAME/REPONAME/contributors"
-          try {
+          // try {
+          //   Map<String, String> query_pairs = new LinkedHashMap<String, String>();
+          //   query_pairs = splitQuery(request.replace("github?", ""));
+          //   String json = fetchURL("https://api.github.com/" + query_pairs.get("query"));
+          //   // System.out.println(json);
+
+          //   List<Repos> repos = Arrays.asList(new Gson().fromJson(json, Repos[].class));
+
+          //   builder.append("Owner Name, Owner ID, Name of Public Repo");
+          //   builder.append("\n \n");
+
+          //   for (Repos repo : repos) {
+          //     builder.append(repo + "\n");
+          //   }
+
+          // } catch (Exception ex) {
+          //   builder.append("Exception.");
+          //   // System.out.println(ex);
+          // }
+
             Map<String, String> query_pairs = new LinkedHashMap<String, String>();
             query_pairs = splitQuery(request.replace("github?", ""));
             String json = fetchURL("https://api.github.com/" + query_pairs.get("query"));
@@ -265,11 +284,6 @@ class WebServer {
             for (Repos repo : repos) {
               builder.append(repo + "\n");
             }
-
-          } catch (Exception ex) {
-            builder.append("Exception.");
-            // System.out.println(ex);
-          }
           // and list the owner name, owner id and name of the public repo on your webpage, e.g.
           // amehlhase, 46384989 -> memoranda
           // amehlhase, 46384989 -> ser316examples
