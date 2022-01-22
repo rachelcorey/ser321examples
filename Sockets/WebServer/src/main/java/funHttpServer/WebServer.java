@@ -251,8 +251,12 @@ class WebServer {
             Map<String, String> query_pairs = new LinkedHashMap<String, String>();
             query_pairs = splitQuery(request.replace("github?", ""));
             String json = fetchURL("https://api.github.com/" + query_pairs.get("query"));
-
-            if (request.contains("repos")) {
+            String user = query_pairs.get("query").split("/")[1];
+            if (request.contains("repos") && request.contains("users")) {
+              
+              if (json.contains("Not Found")) {
+                throw new UserNotFoundException("GitHub user not found!");
+              }
 
               List<Repos> repos = Arrays.asList(new Gson().fromJson(json, Repos[].class));
 
@@ -267,7 +271,11 @@ class WebServer {
             }
           } catch (MalformedAPIException maex) {
             PrintMalformedAPI(builder);
-          } catch (NullPointerException npex) {
+          } catch (UserNotFoundException unfex) {
+            builder.append("The requested GitHub user " + user + " could not be found.");
+            Print404(builder);
+          } 
+          catch (NullPointerException npex) {
             Print404(builder);
           } catch (Exception ex) {
             Print404(builder);
