@@ -261,9 +261,13 @@ class WebServer {
 
             List<Repos> repos = Arrays.asList(new Gson().fromJson(json, Repos[].class));
 
-            builder.append("Processing...... ");
+            builder.append("Owner Name, Owner ID, Name of Public Repo");
             builder.append("\n");
-            builder.append(repos.toString());
+
+            for (Repos repo : repos) {
+              System.out.println(repo);
+            }
+
           } catch (Exception ex) {
 
           }
@@ -452,9 +456,10 @@ public class Repos
         this.owner = owner;
     }
 
+          // amehlhase, 46384989 -> memoranda
     @Override
     public String toString() {
-        return " " + id + " " + full_name + " " + name + " " + owner;
+        return owner + ", " + id + " " + "->" + " " + name;
     }
 
 }
