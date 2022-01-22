@@ -247,34 +247,34 @@ class WebServer {
           // pulls the query from the request and runs it with GitHub's REST API
           // check out https://docs.github.com/rest/reference/
           try {
+
             Map<String, String> query_pairs = new LinkedHashMap<String, String>();
             query_pairs = splitQuery(request.replace("github?", ""));
             String json = fetchURL("https://api.github.com/" + query_pairs.get("query"));
 
-            List<Repos> repos = Arrays.asList(new Gson().fromJson(json, Repos[].class));
 
-            builder.append("Owner Name, Owner ID, Name of Public Repo");
-            builder.append("\n \n");
+            Map g = new Gson().fromJson(json, Map.class);
 
-            for (Repos repo : repos) {
-              builder.append(repo + "\n");
+            builder.append(g.get("message"));
+            if (request.contains("repos")) {
+
+              List<Repos> repos = Arrays.asList(new Gson().fromJson(json, Repos[].class));
+
+              builder.append("Owner Name, Owner ID, Name of Public Repo");
+              builder.append("\n \n");
+
+              for (Repos repo : repos) {
+                builder.append(repo + "\n");
+              } 
+            } else {
+              throw new MalformedAPIException(msg);
             }
-
+          } catch (MalformedAPIException maex) {
+            PrintMalformedAPI(builder);
           } catch (NullPointerException npex) {
-
-            builder.append("HTTP/1.1 400 Bad Request\n");
-            builder.append("Content-Type: text/html; charset=utf-8\n");
-            builder.append("\n");
-            builder.append("ERROR: Malformed API request to GitHub! Please try again. \n\n");
-            builder.append("Please make sure your request is of the form: \n");
-            builder.append("github?query=users/USERNAME/repos\n");
-            builder.append("...where USERNAME is the user whose public repos you'd like to query.\n");
+            Print404(builder);
           } catch (Exception ex) {
-
-            builder.append("HTTP/1.1 404 Not Found\n");
-            builder.append("Content-Type: text/html; charset=utf-8\n");
-            builder.append("\n");
-            builder.append("ERROR: There has been an error in handling your request. Please try again.");
+            Print404(builder);
           }
 
         } else {
@@ -295,6 +295,22 @@ class WebServer {
     }
 
     return response;
+  }
+
+  public static void Print404(StringBuilder builder) {
+    builder.append("HTTP/1.1 404 Not Found\n");
+    builder.append("Content-Type: text/html; charset=utf-8\n");
+    builder.append("\n");
+    builder.append("ERROR: There has been an error in handling your request. Please try again.");
+  }
+  public static void PrintMalformedAPI(StringBuilder builder) {
+    builder.append("HTTP/1.1 400 Bad Request\n");
+    builder.append("Content-Type: text/html; charset=utf-8\n");
+    builder.append("\n");
+    builder.append("ERROR: Malformed API request to GitHub! Please try again. \n\n");
+    builder.append("Please make sure your request is of the form: \n");
+    builder.append("github?query=users/USERNAME/repos\n");
+    builder.append("...where USERNAME is the user whose public repos you'd like to query.\n");
   }
 
   /**
@@ -402,6 +418,18 @@ class WebServer {
     return sb.toString();
   }
 
+public static class UserNotFoundException extends Exception {
+  public UserNotFoundException(String msg) {
+    super(msg);
+  }
+}
+
+
+public static class MalformedAPIException extends Exception {
+  public MalformedAPIException(String msg) {
+    super(msg);
+  }
+}
 
 public class Repos
 {
