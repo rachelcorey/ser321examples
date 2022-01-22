@@ -267,7 +267,7 @@ class WebServer {
                 builder.append(repo + "\n");
               } 
             } else {
-              throw new MalformedAPIException(msg);
+              throw new MalformedAPIException("API Request Invalid!");
             }
           } catch (MalformedAPIException maex) {
             PrintMalformedAPI(builder);
