@@ -27,6 +27,7 @@ import javax.sound.midi.Soundbank;
 
 import java.util.Map;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.nio.charset.Charset;
 import java.io.FileReader;
 import java.util.Iterator;
@@ -255,12 +256,12 @@ class WebServer {
             query_pairs = splitQuery(request.replace("github?", ""));
             String json = fetchURL("https://api.github.com/" + query_pairs.get("query"));
             // System.out.println(json);
-            Object j = new JSONParser().parse(new FileReader(json));
-            JSONObject jo = (JSONObject) j;
 
-            System.out.println("Total keys in json object: " + Object.keys(jo).length);
+            List<Repos> repos = Arrays.asList(new Gson().fromJson(json, Repos[].class));
 
-            builder.append("Check the todos mentioned in the Java source file");
+            builder.append("Processing...... ");
+            builder.append("\n");
+            builder.append(repos.toString());
           } catch (Exception ex) {
 
           }
@@ -396,3 +397,85 @@ class WebServer {
     return sb.toString();
   }
 }
+
+public class Repos
+{
+
+    private String id;
+
+    private String full_name;
+
+    private String name;
+
+    private Owner owner;
+
+
+    public String getId ()
+    {
+        return id;
+    }
+
+    public void setId (String id)
+    {
+        this.id = id;
+    }
+
+    public String getFull_name ()
+    {
+        return full_name;
+    }
+
+    public void setFull_name (String full_name)
+    {
+        this.full_name = full_name;
+    }
+
+    public String getName ()
+    {
+        return name;
+    }
+
+    public void setName (String name)
+    {
+        this.name = name;
+    }
+
+    public Owner getOwner ()
+    {
+        return owner;
+    }
+
+    public void setOwner (Owner owner)
+    {
+        this.owner = owner;
+    }
+
+    @Override
+    public String toString() {
+        return " " + id + " " + full_name + " " + name + " " + owner;
+    }
+
+}
+
+public class Owner
+{
+    private String login;
+
+    public String getLogin ()
+    {
+        return login;
+    }
+
+    public void setLogin (String login)
+    {
+        this.login = login;
+    }
+
+    @Override
+    public String toString() {
+        return login;
+    }
+
+}
+			
+	
