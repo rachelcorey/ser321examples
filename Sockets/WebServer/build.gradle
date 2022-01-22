@@ -24,4 +24,8 @@ task FunWebServer(type: JavaExec) {
   standardInput = System.in
 }
 
+dependencies {
+  implementation 'com.google.code.gson:gson:2.8.9'
+}
+
 
