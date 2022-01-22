@@ -255,7 +255,9 @@ class WebServer {
 
             Map g = new Gson().fromJson(json, Map.class);
 
-            builder.append(g.get("message"));
+            // builder.append(g.get("message"));
+            System.out.println(g.get("message"));
+            System.out.println(g);
             if (request.contains("repos")) {
 
               List<Repos> repos = Arrays.asList(new Gson().fromJson(json, Repos[].class));
