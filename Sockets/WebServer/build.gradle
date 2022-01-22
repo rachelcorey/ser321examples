@@ -25,7 +25,7 @@ task FunWebServer(type: JavaExec) {
 }
 
 dependencies {
-  implementation 'com.google.code.gson:gson:2.8.9'
+  compile 'com.google.code.gson:gson:2.7'
 }
 
 
