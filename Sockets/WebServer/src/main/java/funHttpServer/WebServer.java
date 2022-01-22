@@ -271,6 +271,8 @@ class WebServer {
           } catch (MalformedAPIException maex) {
             PrintMalformedAPI(builder);
           } catch (UserNotFoundException unfex) {
+            Map<String, String> query_pairs = new LinkedHashMap<String, String>();
+            query_pairs = splitQuery(request.replace("github?", ""));
             String user = query_pairs.get("query").split("/")[1];
             builder.append("The requested GitHub user " + user + " could not be found.");
             Print404(builder);
