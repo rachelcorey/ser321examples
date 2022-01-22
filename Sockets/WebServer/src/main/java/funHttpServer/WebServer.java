@@ -262,10 +262,10 @@ class WebServer {
             List<Repos> repos = Arrays.asList(new Gson().fromJson(json, Repos[].class));
 
             builder.append("Owner Name, Owner ID, Name of Public Repo");
-            builder.append("\n");
+            builder.append("\n \n");
 
             for (Repos repo : repos) {
-              builder.append(repo);
+              builder.append(repo + "\n");
             }
 
           } catch (Exception ex) {
