@@ -265,7 +265,7 @@ class WebServer {
             builder.append("\n");
 
             for (Repos repo : repos) {
-              System.out.println(repo);
+              builder.append(repo);
             }
 
           } catch (Exception ex) {
