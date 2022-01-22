@@ -267,10 +267,9 @@ class WebServer {
             }
 
           } catch (Exception ex) {
-            System.out.println(ex);
+            builder.append("Exception.");
+            // System.out.println(ex);
           }
-          // TODO: Parse the JSON returned by your fetch and create an appropriate
-          // response
           // and list the owner name, owner id and name of the public repo on your webpage, e.g.
           // amehlhase, 46384989 -> memoranda
           // amehlhase, 46384989 -> ser316examples
