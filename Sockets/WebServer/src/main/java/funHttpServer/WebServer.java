@@ -252,12 +252,6 @@ class WebServer {
             query_pairs = splitQuery(request.replace("github?", ""));
             String json = fetchURL("https://api.github.com/" + query_pairs.get("query"));
 
-
-            Map g = new Gson().fromJson(json, Map.class);
-
-            // builder.append(g.get("message"));
-            System.out.println(g.get("message"));
-            System.out.println(g);
             if (request.contains("repos")) {
 
               List<Repos> repos = Arrays.asList(new Gson().fromJson(json, Repos[].class));
