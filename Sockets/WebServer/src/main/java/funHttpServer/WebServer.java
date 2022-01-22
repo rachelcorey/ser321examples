@@ -202,17 +202,39 @@ class WebServer {
           query_pairs = splitQuery(request.replace("multiply?", ""));
 
           // extract required fields from parameters
-          Integer num1 = Integer.parseInt(query_pairs.get("num1"));
-          Integer num2 = Integer.parseInt(query_pairs.get("num2"));
+          try {
+            Integer num1 = Integer.parseInt(query_pairs.get("num1"));
+            Integer num2 = Integer.parseInt(query_pairs.get("num2"));
 
-          // do math
-          Integer result = num1 * num2;
+            // do math
+            Integer result = num1 * num2;
 
-          // Generate response
-          builder.append("HTTP/1.1 200 OK\n");
-          builder.append("Content-Type: text/html; charset=utf-8\n");
-          builder.append("\n");
-          builder.append("Result is: " + result);
+            // Generate response
+            builder.append("HTTP/1.1 200 OK\n");
+            builder.append("Content-Type: text/html; charset=utf-8\n");
+            builder.append("\n");
+            builder.append("Result is: " + result);
+          } catch (NumberFormatException nfex) {
+
+            builder.append("HTTP/1.1 400 Bad Request\n");
+            builder.append("Content-Type: text/html; charset=utf-8\n");
+            builder.append("\n");
+            builder.append("ERROR: One or more inputs were not integers! Please try again.");
+            
+          } catch (NullPointerException npex) {
+
+            builder.append("HTTP/1.1 400 Bad Request\n");
+            builder.append("Content-Type: text/html; charset=utf-8\n");
+            builder.append("\n");
+            builder.append("ERROR: One or more inputs were not supplied! Please try again.");
+          } finally {
+
+            builder.append("HTTP/1.1 404 Not Found\n");
+            builder.append("Content-Type: text/html; charset=utf-8\n");
+            builder.append("\n");
+            builder.append("ERROR: There has been an error in handling your request. Please try again.");
+          }
+          
 
           // TODO: Include error handling here with a correct error code and
           // a response that makes sense
