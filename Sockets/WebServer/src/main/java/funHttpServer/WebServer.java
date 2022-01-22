@@ -257,8 +257,6 @@ class WebServer {
             String json = fetchURL("https://api.github.com/" + query_pairs.get("query"));
             // System.out.println(json);
 
-            
-
             List<Repos> repos = Arrays.asList(new Gson().fromJson(json, Repos[].class));
 
             builder.append("Owner Name, Owner ID, Name of Public Repo");
@@ -269,7 +267,7 @@ class WebServer {
             }
 
           } catch (Exception ex) {
-
+            System.out.println(ex);
           }
           // TODO: Parse the JSON returned by your fetch and create an appropriate
           // response
